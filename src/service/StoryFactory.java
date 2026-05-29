@@ -25,6 +25,8 @@ public class StoryFactory {
 
         introScene.setSceneType(SceneType.NORMAL);
 
+        introScene.setFearEffect(10);
+
         introScene.setStory(story);
 
         Scene basementScene = new Scene();
@@ -37,6 +39,8 @@ public class StoryFactory {
 
         basementScene.setSceneType(SceneType.DEATH);
 
+        basementScene.setFearEffect(50);
+
         basementScene.setStory(story);
 
         Scene escapeScene = new Scene();
@@ -48,6 +52,8 @@ public class StoryFactory {
         );
 
         escapeScene.setSceneType(SceneType.ESCAPE);
+
+        escapeScene.setFearEffect(-10);
 
         escapeScene.setStory(story);
 

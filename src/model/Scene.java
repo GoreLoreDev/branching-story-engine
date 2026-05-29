@@ -10,17 +10,20 @@ public class Scene {
     private SceneType sceneType;
     private Story story;
     private List<Choice> choices;
+    private int fearEffect;
+
 
     public Scene() {
     }
 
-    public Scene(int id, String title, String content, List<Choice> choices, Story story, SceneType sceneType) {
+    public Scene(int id, String title, String content, List<Choice> choices, Story story, SceneType sceneType, int fearEffect) {
         this.id = id;
         this.title = title;
         this.content = content;
         this.choices = choices;
         this.story=story;
         this.sceneType = sceneType;
+        this.fearEffect=fearEffect;
     }
 
     public int getId() {
@@ -79,5 +82,13 @@ public class Scene {
 
     public void setSceneType(SceneType sceneType) {
         this.sceneType = sceneType;
+    }
+
+    public int getFearEffect() {
+        return fearEffect;
+    }
+
+    public void setFearEffect(int fearEffect) {
+        this.fearEffect = fearEffect;
     }
 }

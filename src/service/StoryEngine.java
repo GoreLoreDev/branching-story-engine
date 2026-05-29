@@ -66,8 +66,12 @@ public class StoryEngine {
 
         System.out.println(scene.getContent());
 
+        playerState.setFearLevel(playerState.getFearLevel()+ scene.getFearEffect());
+
+        System.out.println("\n Fear Level: "+ playerState.getFearLevel());
+
         if(scene.getSceneType()== SceneType.DEATH){
-            playerState.setFearLevel(playerState.getFearLevel()+50);
+
             System.out.println("\nYou Died");
             System.out.println("Fear level: " + playerState.getFearLevel());
         }
