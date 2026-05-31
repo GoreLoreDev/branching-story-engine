@@ -14,15 +14,27 @@ import ui.MainWindow;
 public class Main {
 
     public static void main(String[] args) {
-        new MainWindow();
 
-        StoryFactory factory = new StoryFactory();
+        StoryFactory factory =
+                new StoryFactory();
 
-        Story story = factory.createStory();
+        Story story =
+                factory.createStory();
 
-        StoryEngine engine = new StoryEngine();
+        StoryEngine engine =
+                new StoryEngine();
 
-        engine.playStory(story);
+        engine.startStory(story);
+
+        MainWindow window =
+                new MainWindow(engine);
+
+
+        window.displayScene(
+                engine.getCurrentScene().getTitle(),
+                engine.getCurrentScene().getContent()
+        );
+
     }
 
 

@@ -42,6 +42,7 @@ public class StoryFactory {
         basementScene.setFearEffect(50);
 
         basementScene.setStory(story);
+        basementScene.setChoices(new ArrayList<>());
 
         Scene escapeScene = new Scene();
 
@@ -56,6 +57,7 @@ public class StoryFactory {
         escapeScene.setFearEffect(-10);
 
         escapeScene.setStory(story);
+        escapeScene.setChoices(new ArrayList<>());
 
         Choice basementChoice = new Choice();
 

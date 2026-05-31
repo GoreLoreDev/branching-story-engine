@@ -7,14 +7,22 @@ import javax.swing.JScrollPane;
 import javax.swing.JButton;
 import java.awt.GridLayout;
 
+import model.Choice;
+import model.Scene;
+import service.StoryEngine;
+
 import java.awt.BorderLayout;
 
 public class MainWindow extends JFrame {
 
+    private StoryEngine engine;
+
     private JTextArea storyArea;
     private JPanel choicePanel;
 
-    public MainWindow() {
+    public MainWindow(StoryEngine engine) {
+
+        this.engine=engine;
 
         setTitle("AI Horror Story Studio");
 
@@ -43,11 +51,7 @@ public class MainWindow extends JFrame {
         choicePanel.setLayout(
                 new GridLayout(0, 1) //unlimited rows, 1 col
         );
-        JButton button1 =
-                new JButton("Open Basement");
 
-        JButton button2 =
-                new JButton("Run Outside");
 
         storyArea.setEditable(false);
 
@@ -66,8 +70,9 @@ public class MainWindow extends JFrame {
         mainPanel.add(choicePanel,
                 BorderLayout.SOUTH);
 
-        choicePanel.add(button1);
-        choicePanel.add(button2);
+        displayChoices();
+
+
 
 
 
@@ -81,5 +86,43 @@ public class MainWindow extends JFrame {
         storyArea.setText(
                 title + "\n\n" + content
         );
+    }
+
+    public void displayChoices(){
+        choicePanel.removeAll();
+
+        Scene currentScene =
+                engine.getCurrentScene();
+
+        for (Choice choice :
+                currentScene.getChoices()) {
+
+            JButton button =
+                    new JButton(choice.getChoiceText());
+
+            button.addActionListener(e -> {
+
+                engine.chooseChoice(choice);
+
+                Scene nextScene =
+                        engine.getCurrentScene();
+
+                displayScene(
+                        nextScene.getTitle(),
+                        nextScene.getContent()
+                );
+
+                displayChoices();
+
+            });
+
+            choicePanel.add(button);
+        }
+
+
+
+        choicePanel.revalidate();
+
+        choicePanel.repaint();
     }
 }

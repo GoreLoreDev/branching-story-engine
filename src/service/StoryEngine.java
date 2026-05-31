@@ -6,6 +6,17 @@ import java.util.Scanner;
 
 public class StoryEngine {
 
+    private Scene currentScene;//the engine should know the currentScene and not just the playStory
+
+    public void chooseChoice(Choice choice){
+        currentScene=choice.getNextScene();
+    }
+
+    public void startStory(Story story){
+        currentScene = story.getStartingScene();
+
+    }
+
     public void playStory(Story story) {
 
         Scanner sc = new Scanner(System.in);
@@ -102,5 +113,9 @@ public class StoryEngine {
                             choice.getChoiceText()
             );
         }
+    }
+
+    public Scene getCurrentScene() {
+        return currentScene;
     }
 }
