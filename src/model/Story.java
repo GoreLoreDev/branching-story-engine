@@ -51,6 +51,7 @@ public class Story {
                 "id=" + id +
                 ", title='" + title + '\'' +
                 ", description='" + description + '\'' +
+                ", scenes=" + scenes +
                 '}';
     }
 
