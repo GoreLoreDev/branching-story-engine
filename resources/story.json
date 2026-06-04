@@ -16,7 +16,15 @@
 
       "sceneType": "NORMAL",
 
-      "fearEffect": 10
+      "fearEffect": 10,
+      "choices": [
+
+        {
+          "text": "Open the basement door",
+          "nextScene": "basement"
+        }
+
+      ]
     },
 
     {
