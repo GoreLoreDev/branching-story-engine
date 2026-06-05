@@ -22,6 +22,11 @@
         {
           "text": "Open the basement door",
           "nextScene": "basement"
+        },
+
+        {
+          "text": "Run outside",
+          "nextScene": "escape"
         }
 
       ]
@@ -37,6 +42,18 @@
       "sceneType": "DEATH",
 
       "fearEffect": 50
+    },
+
+    {
+      "id": "escape",
+
+      "title": "Forest Escape",
+
+      "content": "You sprint back into the forest while something follows you.",
+
+      "sceneType": "ENDING",
+
+      "fearEffect": 20
     }
 
   ]

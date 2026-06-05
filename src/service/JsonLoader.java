@@ -4,14 +4,12 @@ import java.io.FileReader;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import com.google.gson.Gson;
-import model.StoryData;
-import model.Story;
-import model.Scene;
-import model.SceneData;
-import model.SceneType;
+import model.*;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
+import java.util.HashMap;
 
 public class JsonLoader {
     public Story loadStory() {
@@ -43,6 +41,9 @@ public class JsonLoader {
 
             List<Scene> scenes =
                     new ArrayList<>();
+
+            Map<String, Scene> sceneMap =
+                    new HashMap<>();
 
             for (SceneData sceneData :
                     storyData.getScenes()) {
@@ -77,6 +78,52 @@ public class JsonLoader {
 
                 scenes.add(scene);
 
+                sceneMap.put(
+                        scene.getSceneId(),
+                        scene
+                );
+
+            }
+
+            for (SceneData sceneData :
+                    storyData.getScenes()) {
+                Scene currentScene =
+                        sceneMap.get(
+                                sceneData.getId()
+                        );
+
+
+                List<Choice> choices =
+                        new ArrayList<>();
+                if (sceneData.getChoices() == null) {
+
+                    continue;
+                }
+
+                for (ChoiceData choiceData :
+                        sceneData.getChoices()) {
+                    Choice choice = new Choice();
+
+                    choice.setChoiceText(
+                            choiceData.getText()
+                    );
+
+                    Scene nextScene =
+                            sceneMap.get(
+                                    choiceData.getNextScene()
+                            );
+
+                    choice.setNextScene(
+                            nextScene
+                    );
+
+                    choices.add(choice);
+
+                }
+
+                currentScene.setChoices(
+                        choices
+                );
             }
 
             story.setScenes(scenes);
@@ -91,7 +138,8 @@ public class JsonLoader {
 
                     break;
                 }
-            } //JSON SAYS "starting scene": "intro" LOADER SEARCHES WHICH SCENE HAS SCENE ID "intro" AND THEN ASSIGNS IT
+            }
+
 
             System.out.println(story);
 
