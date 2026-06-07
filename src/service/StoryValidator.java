@@ -6,6 +6,40 @@ import java.util.Set;
 
 public class StoryValidator {
 
+    //using DFS to see which scenes are not connected
+    private void traverseScenes(
+            Scene scene,
+            Set<String> visited
+    ) {
+        if (scene == null) {
+
+            return;
+        }
+        if (visited.contains(
+                scene.getSceneId()
+        )) {
+
+            return;
+        }
+        visited.add(
+                scene.getSceneId()
+        );
+
+        for (Choice choice :
+                scene.getChoices()) {
+
+            traverseScenes(
+                    choice.getNextScene(),
+                    visited
+            );//visit every connected scene
+
+        }
+
+
+
+
+    }
+
     public void validateStory(Story story) {
         Set<String> validSceneIds =
                 new HashSet<>();
@@ -37,5 +71,29 @@ public class StoryValidator {
             }
 
         }
+
+        Set<String> visited =
+                new HashSet<>();
+
+        traverseScenes(
+                story.getStartingScene(),
+                visited
+        );
+
+        for (Scene scene :
+             story.getScenes()) {
+
+            if (!visited.contains(
+                    scene.getSceneId()
+            )) {
+
+                System.out.println(
+                        "WARNING: Unreachable scene: "
+                                + scene.getSceneId()
+                );
+            }
+
+        }
     }
+
 }
