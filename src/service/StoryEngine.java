@@ -125,11 +125,26 @@ public class StoryEngine {
         }
     }
 
+
+
     public Scene getCurrentScene() {
         return currentScene;
     }
 
     public PlayerState getPlayerState(){
         return playerState;
+    }
+
+    public void setCurrentScene(Scene scene){
+        currentScene=scene;
+    }
+
+    public void setFearLevel(
+            int fearLevel
+    ) {
+
+        playerState.setFearLevel(
+                fearLevel
+        );
     }
 }

@@ -9,7 +9,10 @@ import java.awt.GridLayout;
 import java.awt.Font;
 
 import model.Choice;
+import model.SaveData;
 import model.Scene;
+import model.Story;
+import service.SaveService;
 import service.StoryEngine;
 
 import java.awt.BorderLayout;
@@ -20,11 +23,29 @@ public class MainWindow extends JFrame {
 
     private JTextArea storyArea;
     private JPanel choicePanel;
+    JPanel controlPanel =
+            new JPanel();
     private JTextArea statusArea;
 
-    public MainWindow(StoryEngine engine) {
+    private Scene currentScene;
+
+
+
+    private Story story;
+
+    private SaveService saveService = new SaveService();
+
+    public MainWindow(
+            Story story,
+            StoryEngine engine
+    ) {
+
+        currentScene =
+                engine.getCurrentScene();
+
 
         this.engine=engine;
+        this.story=story;
 
         setTitle("AI Horror Story Studio");
 
@@ -55,9 +76,86 @@ public class MainWindow extends JFrame {
         );
 
         choicePanel=new JPanel();
+
+
+
+        JButton saveButton =
+                new JButton("Save Game");
+
+
+        saveButton.addActionListener(e -> {
+
+            SaveData saveData =
+                    new SaveData();
+
+            saveData.setCurrentSceneId(
+                    currentScene.getSceneId()
+            );
+
+            saveData.setFearLevel(
+                    engine.getPlayerState()
+                            .getFearLevel()
+            );
+
+            saveService.saveGame(
+                    saveData
+            );
+
+        });
+
+        JButton loadButton =
+                new JButton("Load Game");
+
+
+
+        loadButton.addActionListener(e -> {
+
+            SaveData saveData =
+                    saveService.loadGame();
+
+            if (saveData == null) {
+
+                return;
+            }
+
+            Scene loadedScene = null;
+
+            for (Scene scene :
+                    story.getScenes()) {
+                if (scene.getSceneId().equals(
+                        saveData.getCurrentSceneId()
+                )) {
+
+                    loadedScene = scene;
+
+                    break;
+                }
+
+            }
+
+            engine.setCurrentScene(
+                    loadedScene
+            );
+
+            engine.setFearLevel(
+                    saveData.getFearLevel()
+            );
+
+            currentScene = loadedScene;
+
+            renderScene(currentScene);
+        });
+
         choicePanel.setLayout(
                 new GridLayout(0, 1) //unlimited rows, 1 col
         );
+        controlPanel.add(saveButton);
+
+        controlPanel.add(loadButton);
+
+        add(choicePanel, BorderLayout.SOUTH);
+
+        add(controlPanel, BorderLayout.NORTH);
 
 
         storyArea.setEditable(false);
@@ -108,11 +206,12 @@ public class MainWindow extends JFrame {
         );
     }
 
+
+
     public void displayChoices(){
         choicePanel.removeAll();
 
-        Scene currentScene =
-                engine.getCurrentScene();
+
 
         if (currentScene.getChoices().isEmpty()) {
 
@@ -140,16 +239,15 @@ public class MainWindow extends JFrame {
 
                 engine.chooseChoice(choice);
 
-                Scene nextScene =
+                currentScene =
                         engine.getCurrentScene();
 
-                renderScene(nextScene);
-
-                displayChoices();
+                renderScene(currentScene);
 
             });
 
             choicePanel.add(button);
+
         }
 
 

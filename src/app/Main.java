@@ -49,7 +49,7 @@ public class Main {
         engine.startStory(story);
 
         MainWindow window =
-                new MainWindow(engine);
+                new MainWindow(story, engine);
 
 
         window.renderScene(
